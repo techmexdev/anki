@@ -5,12 +5,12 @@ Date: 2026-07-30
 ## Build identity
 
 - Linked Rust bridge source revision:
-  `0e3627234f9823ebafadfde56a58c5d2dbed8b00`
+  `6b89bf085f4100dd70f5e7a360d3dd71a863cf18`
 - Historical pre-iOS core baseline:
   `af5417a858cf979e4f9cadef02310d197fa52429`
 - Bundle identifier: `com.techmexdev.BrainliftMobile`
 - Xcode: 26.6 (`17F113`)
-- Rust: 1.89.0
+- Rust: 1.92.0
 - XcodeGen: 2.46.0
 - Swift Protobuf: 1.38.1
 - Simulator: iPhone 17 Pro, iOS 26.5
@@ -43,11 +43,11 @@ Date: 2026-07-30
 - `BrainliftMobile` simulator suite: 37 passed (34 unit/integration, 3 UI)
 - Simulator build, install, and clean launch: passed
 - Installed `AnkiBridgeSourceRevision` metadata:
-  `0e3627234f9823ebafadfde56a58c5d2dbed8b00`
+  `6b89bf085f4100dd70f5e7a360d3dd71a863cf18`
 - Simulator XCFramework SHA-256:
-  `5174f53ed44ae7f0264c904b0039ed8493b979f7f1830af217860c55fe134169`
+  `d15068123f401734e418ee7365fb50a665f335fae5e38dfcfaebaf180b6e7cee`
 - Installed simulator app tree SHA-256:
-  `a879996a872a9383b1e7db3d9ed512ab654341bfb2f210ace97b68e471eef118`
+  `4e0cbfe9d9975fd4fb6a677c84385b0e9fcf009bd2d685db928b8095f2ec3473`
 
 The app tree checksum is a local Debug simulator artifact checksum, not an
 App Store distribution checksum. The artifact was generated from the clean
