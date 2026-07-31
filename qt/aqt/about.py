@@ -3,13 +3,22 @@
 
 import platform
 from collections.abc import Callable
+from typing import Optional
 
 import aqt.forms
 from anki.lang import without_unicode_isolation
 from anki.utils import version_with_build
 from aqt.errors import addon_debug_info
+from aqt.identity import brainlift_commit
 from aqt.qt import *
 from aqt.utils import disable_help_button, supportText, tooltip, tr
+
+
+def brainlift_build_line(commit: Optional[str] = None) -> str:
+    """Return the optional Brainlift build line shown in About."""
+    if commit is None:
+        commit = brainlift_commit()
+    return f"{tr.qt_misc_brainlift_build(commit=commit)}<br>" if commit else ""
 
 
 class ClosableQDialog(QDialog):
@@ -70,6 +79,7 @@ def show(mw: aqt.AnkiQt) -> QDialog:
     abouttext += f"<p>{lede}"
     abouttext += f"<p>{tr.about_anki_is_licensed_under_the_agpl3()}"
     abouttext += f"<p>{tr.about_version(val=version_with_build())}<br>"
+    abouttext += brainlift_build_line()
     abouttext += ("Python %s Qt %s Chromium %s<br>") % (
         platform.python_version(),
         qVersion(),

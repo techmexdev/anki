@@ -30,6 +30,7 @@ allow = [
   "Unlicense",
   "Zlib",
   "Unicode-3.0",
+  "AGPL-3.0-or-later",
 ]
 confidence-threshold = 0.8
 # eg { allow = ["Zlib"], name = "adler32", version = "*" },

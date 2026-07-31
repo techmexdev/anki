@@ -1,6 +1,8 @@
 // Copyright: Ankitects Pty Ltd and contributors
 // License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
+use std::collections::HashSet;
+
 use itertools::Itertools;
 use serde::Deserialize;
 use serde::Serialize;
@@ -160,16 +162,61 @@ impl Collection {
     /// If the provided objects are not modified locally, the USN inside
     /// the individual objects is used.
     pub(in crate::sync) fn apply_chunk(&mut self, chunk: Chunk, pending_usn: Usn) -> Result<()> {
-        self.merge_revlog(chunk.revlog)?;
+        self.merge_revlog(chunk.revlog, pending_usn)?;
         self.merge_cards(chunk.cards, pending_usn)?;
         self.merge_notes(chunk.notes, pending_usn)
     }
 
-    fn merge_revlog(&self, entries: Vec<RevlogEntry>) -> Result<()> {
-        for entry in entries {
-            self.storage.add_revlog_entry(&entry, false)?;
+    fn merge_revlog(&self, entries: Vec<RevlogEntry>, pending_usn: Usn) -> Result<()> {
+        let incoming_ids: HashSet<_> = entries.iter().map(|entry| entry.id).collect();
+
+        for mut entry in entries {
+            let Some(existing) = self.storage.get_revlog_entry(entry.id)? else {
+                self.storage.add_revlog_entry(&entry, false)?;
+                continue;
+            };
+            if same_revlog_payload(&existing, &entry) {
+                continue;
+            }
+
+            let relocated_id = self.available_revlog_collision_id(entry.id, &incoming_ids)?;
+            if self.server {
+                entry.id = relocated_id;
+                self.storage.add_revlog_entry(&entry, false)?;
+            } else {
+                // Server chunks arrive before client uploads, so the server's
+                // payload keeps the shared ID and the pending local one moves.
+                self.storage
+                    .move_revlog_entry(existing.id, relocated_id, pending_usn)?;
+                self.storage.add_revlog_entry(&entry, false)?;
+            }
         }
         Ok(())
+    }
+
+    fn available_revlog_collision_id(
+        &self,
+        original_id: RevlogId,
+        incoming_ids: &HashSet<RevlogId>,
+    ) -> Result<RevlogId> {
+        const MILLIS_PER_SECOND: i64 = 1_000;
+
+        let second_start = original_id.0.div_euclid(MILLIS_PER_SECOND) * MILLIS_PER_SECOND;
+        let original_millis = original_id.0.rem_euclid(MILLIS_PER_SECOND);
+        for delta in 1..MILLIS_PER_SECOND {
+            let millis = (original_millis + delta).rem_euclid(MILLIS_PER_SECOND);
+            let candidate = RevlogId(second_start + millis);
+            if !incoming_ids.contains(&candidate)
+                && self.storage.get_revlog_entry(candidate)?.is_none()
+            {
+                return Ok(candidate);
+            }
+        }
+
+        invalid_input!(
+            "no free revlog ID remains in timestamp second {}",
+            original_id.as_secs().0
+        );
     }
 
     fn merge_cards(&self, entries: Vec<CardEntry>, pending_usn: Usn) -> Result<()> {
@@ -412,6 +459,17 @@ pub fn server_apply_chunk(
     state: &mut ServerSyncState,
 ) -> Result<()> {
     col.apply_chunk(req.chunk, state.client_usn)
+}
+
+fn same_revlog_payload(left: &RevlogEntry, right: &RevlogEntry) -> bool {
+    left.id == right.id
+        && left.cid == right.cid
+        && left.button_chosen == right.button_chosen
+        && left.interval == right.interval
+        && left.last_interval == right.last_interval
+        && left.ease_factor == right.ease_factor
+        && left.taken_millis == right.taken_millis
+        && left.review_kind == right.review_kind
 }
 
 impl Usn {

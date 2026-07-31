@@ -1,0 +1,67 @@
+# Brainlift iOS simulator proof
+
+Date: 2026-07-31 (revalidated)
+
+## Build identity
+
+- Linked Rust bridge source revision:
+  `6b89bf085f4100dd70f5e7a360d3dd71a863cf18`
+- Historical pre-iOS core baseline:
+  `af5417a858cf979e4f9cadef02310d197fa52429`
+- Bundle identifier: `com.techmexdev.BrainliftMobile`
+- Xcode: 26.6 (`17F113`)
+- Rust: 1.92.0
+- XcodeGen: 2.46.0
+- Swift Protobuf: 1.38.1
+- Simulator: iPhone 17 Pro, iOS 26.5
+
+## Verified behavior
+
+- The Rust bridge owns opaque backend handles and response buffers and contains
+  panics at the C boundary.
+- Swift opens a real fixture collection through the bridge.
+- Review queue, rendering, grading, undo, persistence, evidence, and sync calls
+  cross the Rust boundary.
+- Card HTML renders under a restrictive content policy with remote navigation
+  and exfiltration channels blocked.
+- Evidence values are direct projections of Rust responses.
+- Initial sync auto-accepts only a backend-requested full download. Upload and
+  later full-sync directions require explicit confirmation.
+- Sync progress remains observable during long native operations, while close
+  waits safely for active bridge calls.
+- Simulator UI tests cover review/reveal/grade/undo, evidence abstention, and
+  explicit later full-sync direction selection.
+- The generated app installs and launches on the simulator, and visibly reports
+  its linked Rust bridge revision.
+- The native ABI revision, generated bundle marker, and Swift-visible identity
+  agree, and the recorded source revision is a clean committed tree.
+
+## Recorded checks
+
+- `cargo test -p anki_ios_bridge`: 9 passed
+- `cargo test -p anki brainlift_sync_`: 5 passed
+- `xcodebuild test ... CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=-`: 37 passed (34 unit/integration, 3 UI)
+- Simulator build, install, and clean launch: passed
+- Installed `AnkiBridgeSourceRevision` metadata:
+  `6b89bf085f4100dd70f5e7a360d3dd71a863cf18`
+- Simulator XCFramework SHA-256:
+  `d15068123f401734e418ee7365fb50a665f335fae5e38dfcfaebaf180b6e7cee`
+- Installed simulator app tree SHA-256:
+  `4e0cbfe9d9975fd4fb6a677c84385b0e9fcf009bd2d685db928b8095f2ec3473`
+
+The app tree checksum is a local Debug simulator artifact checksum, not an
+App Store distribution checksum. The artifact was generated from the clean
+source revision above; this proof-record update follows that artifact commit.
+
+The unsigned simulator invocation (`CODE_SIGNING_ALLOWED=NO`) is not an
+authoritative result for keychain-backed tests: it produced `errSecMissingEntitlement`
+and stopped the UI sync flow before the test backend could run. The signed
+simulator invocation above passed the same keychain and explicit full-sync
+direction paths.
+
+## Explicit limitations
+
+This proof uses the simulator at the user's direction. No claim is made for
+physical-device code signing, provisioning, installation, or runtime behavior.
+No live AnkiWeb sync was attempted because disposable credentials were not
+available. The local Rust sync fixtures are the authoritative sync proof.

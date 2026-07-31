@@ -12,6 +12,12 @@ import aqt.main
 from anki.decks import DeckId
 from anki.utils import is_mac
 from aqt import gui_hooks
+from aqt.brainlift import (
+    brainlift_dashboard,
+    render_brainlift_html,
+    render_brainlift_loading_html,
+)
+from aqt.operations import QueryOp
 from aqt.operations.deck import set_current_deck
 from aqt.qt import *
 from aqt.theme import theme_manager
@@ -25,6 +31,25 @@ from aqt.utils import (
     tr,
 )
 from aqt.webview import LegacyStatsWebView
+
+
+def _add_brainlift_panel(form: Any) -> QLabel:
+    label = QLabel()
+    label.setObjectName("brainliftEvidence")
+    label.setTextFormat(Qt.TextFormat.RichText)
+    label.setWordWrap(True)
+    label.setMargin(8)
+    label.setText(render_brainlift_loading_html())
+    form.verticalLayout.insertWidget(0, label)
+    return label
+
+
+def _refresh_brainlift_panel(*, parent: QWidget, label: QLabel) -> None:
+    QueryOp(
+        parent=parent,
+        op=brainlift_dashboard,
+        success=lambda dashboard: label.setText(render_brainlift_html(dashboard)),
+    ).run_in_background()
 
 
 class NewDeckStats(QDialog):
@@ -43,6 +68,7 @@ class NewDeckStats(QDialog):
         disable_help_button(self)
         f = self.form
         f.setupUi(self)
+        self.brainlift_label = _add_brainlift_panel(f)
         f.groupBox.setVisible(False)
         f.groupBox_2.setVisible(False)
         if not is_mac:
@@ -139,6 +165,7 @@ class NewDeckStats(QDialog):
 
     def refresh(self) -> None:
         self.form.web.load_sveltekit_page("graphs")
+        _refresh_brainlift_panel(parent=self, label=self.brainlift_label)
 
 
 class DeckStats(QDialog):
@@ -166,6 +193,7 @@ class DeckStats(QDialog):
             # the wrong place, so for now we just disable the border instead
             self.setStyleSheet("QGroupBox { border: 0; }")
         f.setupUi(self)
+        self.brainlift_label = _add_brainlift_panel(f)
         restoreGeom(self, self.name)
         b = f.buttonBox.addButton(
             tr.statistics_save_pdf(), QDialogButtonBox.ButtonRole.ActionRole
@@ -237,3 +265,4 @@ class DeckStats(QDialog):
             context=self,
         )
         self.mw.progress.finish()
+        _refresh_brainlift_panel(parent=self, label=self.brainlift_label)

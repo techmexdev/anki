@@ -31,6 +31,12 @@ from anki.tags import MARKED_TAG
 from anki.types import assert_exhaustive
 from anki.utils import is_mac
 from aqt import AnkiQt, gui_hooks
+from aqt.brainlift import (
+    BrainliftDashboard,
+    brainlift_dashboard,
+    render_brainlift_html,
+    render_brainlift_loading_html,
+)
 from aqt.browser.card_info import PreviousReviewerCardInfo, ReviewerCardInfo
 from aqt.deckoptions import confirm_deck_then_display_options
 from aqt.operations.card import set_card_flag
@@ -183,6 +189,7 @@ class Reviewer:
         self._reps = None
         self._refresh_needed = RefreshNeeded.QUEUES
         self.refresh_if_needed()
+        self._refresh_brainlift_evidence()
 
     # this is only used by add-ons
     def lastCard(self) -> Card | None:
@@ -335,9 +342,33 @@ class Reviewer:
 <div id="_mark" hidden>&#x2605;</div>
 <div id="_flag" hidden>&#x2691;</div>
 {fade}
+<section id="brainlift-evidence" style="margin: 10px auto; max-width: 760px;">
+  {render_brainlift_loading_html()}
+</section>
 <div id="qa" dir="auto"></div>
 {extra}
 """
+
+    def _refresh_brainlift_evidence(self) -> None:
+        def update(dashboard: BrainliftDashboard) -> None:
+            if self.mw.state != "review":
+                return
+            rendered = render_brainlift_html(dashboard)
+            self.web.eval(
+                """
+const brainlift = document.getElementById("brainlift-evidence");
+if (brainlift) {
+    brainlift.outerHTML = %s;
+}
+"""
+                % json.dumps(rendered)
+            )
+
+        aqt.operations.QueryOp(
+            parent=self.mw,
+            op=brainlift_dashboard,
+            success=update,
+        ).run_in_background()
 
     def _initWeb(self) -> None:
         self._reps = 0
@@ -565,6 +596,7 @@ class Reviewer:
     def _after_answering(self, ease: Literal[1, 2, 3, 4]) -> None:
         gui_hooks.reviewer_did_answer_card(self, self.card, ease)
         self._answeredIds.append(self.card.id)
+        self._refresh_brainlift_evidence()
         if not self.check_timebox():
             self.nextCard()
 

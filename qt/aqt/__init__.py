@@ -589,6 +589,11 @@ def run() -> None:
         )
 
 
+def _write_profile_results_if_enabled() -> None:
+    if PROFILE_CODE:
+        write_profile_results()
+
+
 def _run(argv: list[str] | None = None, exec: bool = True) -> AnkiApp | None:
     """Start AnkiQt application or reuse an existing instance if one exists.
 
@@ -683,7 +688,22 @@ def _run(argv: list[str] | None = None, exec: bool = True) -> AnkiApp | None:
         os.environ["QT_QPA_PLATFORM"] = "windows:altgr"
 
     # create the app
-    QCoreApplication.setApplicationName("Anki")
+    from aqt.identity import app_name
+
+    QCoreApplication.setApplicationName(app_name())
+    if os.environ.get("BRAINLIFT_INSTALLER_SMOKE_ONLY") == "1":
+        from aqt.about import brainlift_build_line
+        from aqt.brainlift import brainlift_dashboard
+        from aqt.identity import brainlift_commit
+
+        commit = brainlift_commit()
+        assert commit == os.environ["ANKI_BRAINLIFT_COMMIT"]
+        assert QCoreApplication.applicationName() == "Anki Brainlift"
+        assert commit in brainlift_build_line(commit)
+        assert hasattr(Collection, "brainlift_score_snapshot")
+        assert callable(brainlift_dashboard)
+        print(f"Brainlift installer smoke passed for {commit}")
+        return None
     QGuiApplication.setDesktopFileName("anki")
     app = AnkiApp(argv)
     if app.secondInstance():
@@ -790,7 +810,6 @@ def _run(argv: list[str] | None = None, exec: bool = True) -> AnkiApp | None:
     else:
         return app
 
-    if PROFILE_CODE:
-        write_profile_results()
+    _write_profile_results_if_enabled()
 
     return None
