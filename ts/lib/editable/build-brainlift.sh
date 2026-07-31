@@ -17,7 +17,7 @@ fi
 
 cd "$PROJ_ROOT"
 rm -f "$PROJ_ROOT"/out/wheels/anki-*.whl "$PROJ_ROOT"/out/wheels/aqt-*.whl
-PROTOC="${PROTOC:-/opt/homebrew/bin/protoc}" ./ninja wheels launcher:uv_universal
+PROTOC="${PROTOC:-/opt/homebrew/bin/protoc}" ./ninja wheels uv_binary
 
 ANKI_WHEELS=("$PROJ_ROOT"/out/wheels/anki-*.whl)
 AQT_WHEELS=("$PROJ_ROOT"/out/wheels/aqt-*.whl)
@@ -45,7 +45,7 @@ sed "s/ANKI_VERSION/$VERSION/g" "$SCRIPT_DIR/Info.plist" > "$APP/Contents/Info.p
 /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier dev.techmex.brainlift" "$APP/Contents/Info.plist"
 
 cp "$SCRIPT_DIR/icon/Assets.car" "$APP/Contents/Resources/"
-cp "$PROJ_ROOT/out/launcher/uv" "$APP/Contents/Resources/uv"
+cp "$PROJ_ROOT/out/extracted/uv/uv" "$APP/Contents/Resources/uv"
 cp "$SCRIPT_DIR/brainlift-launcher.sh" "$APP/Contents/MacOS/brainlift-launcher"
 cp "$ANKI_WHEEL" "$APP/Contents/Resources/runtime/wheels/"
 cp "$AQT_WHEEL" "$APP/Contents/Resources/runtime/wheels/"
