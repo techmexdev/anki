@@ -1,6 +1,6 @@
 # Brainlift iOS simulator proof
 
-Date: 2026-07-30
+Date: 2026-07-31 (revalidated)
 
 ## Build identity
 
@@ -40,7 +40,7 @@ Date: 2026-07-30
 
 - `cargo test -p anki_ios_bridge`: 9 passed
 - `cargo test -p anki brainlift_sync_`: 5 passed
-- `BrainliftMobile` simulator suite: 37 passed (34 unit/integration, 3 UI)
+- `xcodebuild test ... CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=-`: 37 passed (34 unit/integration, 3 UI)
 - Simulator build, install, and clean launch: passed
 - Installed `AnkiBridgeSourceRevision` metadata:
   `6b89bf085f4100dd70f5e7a360d3dd71a863cf18`
@@ -52,6 +52,12 @@ Date: 2026-07-30
 The app tree checksum is a local Debug simulator artifact checksum, not an
 App Store distribution checksum. The artifact was generated from the clean
 source revision above; this proof-record update follows that artifact commit.
+
+The unsigned simulator invocation (`CODE_SIGNING_ALLOWED=NO`) is not an
+authoritative result for keychain-backed tests: it produced `errSecMissingEntitlement`
+and stopped the UI sync flow before the test backend could run. The signed
+simulator invocation above passed the same keychain and explicit full-sync
+direction paths.
 
 ## Explicit limitations
 
