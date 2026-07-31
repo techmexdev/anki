@@ -244,7 +244,7 @@ class DeckBrowser:
         if node.collapsed:
             prefix = "+"
         else:
-            prefix = "-"
+            prefix = "−"
 
         def indent() -> str:
             return "&nbsp;" * 6 * (node.level - 1)
