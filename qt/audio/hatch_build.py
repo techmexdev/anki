@@ -12,7 +12,7 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 class CustomBuildHook(BuildHookInterface):
     """Build hook to copy platform-specific audio binaries."""
 
-    def initialize(self, version, build_data):  # complexipy: ignore
+    def initialize(self, version, build_data):
         """Initialize the build hook and set platform tags."""
 
         # Set platform-specific wheel tag

@@ -16,7 +16,7 @@ class MnemosyneImporter(NoteImporter):
     update = False
     allowHTML = True
 
-    def run(self):  # complexipy: ignore
+    def run(self):
         db = DB(self.file)
         ver = db.scalar("select value from global_variables where key='version'")
         if not ver.startswith("Mnemosyne SQL 1") and ver not in ("2", "3"):

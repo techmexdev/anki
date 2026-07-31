@@ -89,7 +89,7 @@ class Anki2Importer(Importer):
             "[{}] {}".format(action, strip_html_media(noteRow[6].replace("\x1f", ", ")))
         )
 
-    def _importNotes(self) -> None:  # complexipy: ignore
+    def _importNotes(self) -> None:
         # build guid -> (id,mod,mid) hash & map of existing note ids
         self._notes: dict[str, tuple[NoteId, int, NotetypeId]] = {}
         existing = {}
@@ -308,7 +308,7 @@ class Anki2Importer(Importer):
     # Cards
     ######################################################################
 
-    def _importCards(self) -> None:  # complexipy: ignore
+    def _importCards(self) -> None:
         if self.source_needs_upgrade:
             self.src.upgrade_to_v2_scheduler()
         # build map of (guid, ord) -> cid and used id cache

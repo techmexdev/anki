@@ -162,7 +162,7 @@ class AddCards(QMainWindow):
     def on_deck_changed(self, deck_id: int) -> None:
         gui_hooks.add_cards_did_change_deck(deck_id)
 
-    def on_notetype_change(  # complexipy: ignore
+    def on_notetype_change(
         self, notetype_id: NotetypeId, update_deck: bool = True
     ) -> None:
         # need to adjust current deck?

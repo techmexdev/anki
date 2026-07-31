@@ -246,7 +246,7 @@ class MPVBase:
         if hasattr(self, "_thread"):
             self._thread.join()
 
-    def _reader(self):  # complexipy: ignore
+    def _reader(self):
         """Read the incoming json messages from the unix socket that is
         connected to the mpv process. Pass them on to the message handler.
         """

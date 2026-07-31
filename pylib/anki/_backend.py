@@ -200,9 +200,7 @@ class Translations(GeneratedTranslations):
         )
 
 
-def backend_exception_to_pylib(  # complexipy: ignore
-    err: backend_pb2.BackendError,
-) -> Exception:
+def backend_exception_to_pylib(err: backend_pb2.BackendError) -> Exception:
     kind = backend_pb2.BackendError
     val = err.kind
     help_page = err.help_page if err.HasField("help_page") else None
