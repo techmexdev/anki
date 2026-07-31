@@ -44,7 +44,9 @@ sed "s/ANKI_VERSION/$VERSION/g" "$SCRIPT_DIR/Info.plist" > "$APP/Contents/Info.p
 /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable brainlift-launcher" "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier dev.techmex.brainlift" "$APP/Contents/Info.plist"
 
-cp "$SCRIPT_DIR/icon/Assets.car" "$APP/Contents/Resources/"
+if [[ -f "$SCRIPT_DIR/icon/Assets.car" ]]; then
+    cp "$SCRIPT_DIR/icon/Assets.car" "$APP/Contents/Resources/"
+fi
 cp "$PROJ_ROOT/out/extracted/uv/uv" "$APP/Contents/Resources/uv"
 cp "$SCRIPT_DIR/brainlift-launcher.sh" "$APP/Contents/MacOS/brainlift-launcher"
 cp "$ANKI_WHEEL" "$APP/Contents/Resources/runtime/wheels/"
