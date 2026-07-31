@@ -551,6 +551,9 @@ nonisolated struct Anki_Stats_CardStatsResponse: @unchecked Sendable {
     /// Clears the value of `memoryState`. Subsequent reads from it will return its default value.
     mutating func clearMemoryState() {self._memoryState = nil}
 
+    /// seconds
+    var lastInterval: UInt32 = 0
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -1995,7 +1998,7 @@ nonisolated extension Anki_Stats_CardStatsResponse: SwiftProtobuf.Message, Swift
 
 nonisolated extension Anki_Stats_CardStatsResponse.StatsRevlogEntry: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = Anki_Stats_CardStatsResponse.protoMessageName + ".StatsRevlogEntry"
-  static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{3}review_kind\0\u{3}button_chosen\0\u{1}interval\0\u{1}ease\0\u{3}taken_secs\0\u{3}memory_state\0")
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}time\0\u{3}review_kind\0\u{3}button_chosen\0\u{1}interval\0\u{1}ease\0\u{3}taken_secs\0\u{3}memory_state\0\u{3}last_interval\0")
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -2010,6 +2013,7 @@ nonisolated extension Anki_Stats_CardStatsResponse.StatsRevlogEntry: SwiftProtob
       case 5: try { try decoder.decodeSingularUInt32Field(value: &self.ease) }()
       case 6: try { try decoder.decodeSingularFloatField(value: &self.takenSecs) }()
       case 7: try { try decoder.decodeSingularMessageField(value: &self._memoryState) }()
+      case 8: try { try decoder.decodeSingularUInt32Field(value: &self.lastInterval) }()
       default: break
       }
     }
@@ -2041,6 +2045,9 @@ nonisolated extension Anki_Stats_CardStatsResponse.StatsRevlogEntry: SwiftProtob
     try { if let v = self._memoryState {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
     } }()
+    if self.lastInterval != 0 {
+      try visitor.visitSingularUInt32Field(value: self.lastInterval, fieldNumber: 8)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -2052,6 +2059,7 @@ nonisolated extension Anki_Stats_CardStatsResponse.StatsRevlogEntry: SwiftProtob
     if lhs.ease != rhs.ease {return false}
     if lhs.takenSecs != rhs.takenSecs {return false}
     if lhs._memoryState != rhs._memoryState {return false}
+    if lhs.lastInterval != rhs.lastInterval {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

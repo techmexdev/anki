@@ -28,6 +28,44 @@ fileprivate nonisolated struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobu
   typealias Version = _2
 }
 
+nonisolated enum Anki_Config_ExperimentalFeatureFlag: SwiftProtobuf.Enum, Swift.CaseIterable {
+  typealias RawValue = Int
+  case testFlag // = 0
+  case svelteEditor // = 1
+  case svelteReviewer // = 2
+  case UNRECOGNIZED(Int)
+
+  init() {
+    self = .testFlag
+  }
+
+  init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .testFlag
+    case 1: self = .svelteEditor
+    case 2: self = .svelteReviewer
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  var rawValue: Int {
+    switch self {
+    case .testFlag: return 0
+    case .svelteEditor: return 1
+    case .svelteReviewer: return 2
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  static let allCases: [Anki_Config_ExperimentalFeatureFlag] = [
+    .testFlag,
+    .svelteEditor,
+    .svelteReviewer,
+  ]
+
+}
+
 nonisolated struct Anki_Config_ConfigKey: Sendable {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -472,6 +510,10 @@ nonisolated struct Anki_Config_Preferences: @unchecked Sendable {
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
 
 fileprivate nonisolated let _protobuf_package = "anki.config"
+
+nonisolated extension Anki_Config_ExperimentalFeatureFlag: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{2}\0TEST_FLAG\0\u{1}SVELTE_EDITOR\0\u{1}SVELTE_REVIEWER\0")
+}
 
 nonisolated extension Anki_Config_ConfigKey: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = _protobuf_package + ".ConfigKey"

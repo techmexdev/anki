@@ -51,6 +51,7 @@
 		A9B8BF459BE384D83D9915CE /* image_occlusion.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429B41360E0CB6A9DDAB1660 /* image_occlusion.pb.swift */; };
 		AB598271D0F33208D84CC765 /* ankidroid.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AAF4B6DA682330049448E34 /* ankidroid.pb.swift */; };
 		AC84CFCCCC3BAEF649EE0305 /* SyncCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49EBF8219DA483F2C5621C47 /* SyncCoordinatorTests.swift */; };
+		BB139025A0CE1AAA54D200BC /* github.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBA541B01CB26E596D5A1A /* github.pb.swift */; };
 		C0309027C34E70B1B2F4EF06 /* scheduler.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B073F629309A179499679C0 /* scheduler.pb.swift */; };
 		CD8CA2B97733B39A72BEFDEF /* media.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA9E91B7CAF0C610BA88E3 /* media.pb.swift */; };
 		CF515BF887C9AFB1CC1BA4C9 /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = C3D925242DC4A72D46331A00 /* SwiftProtobuf */; };
@@ -109,6 +110,7 @@
 		6D59D381B5C4F3A08D36407B /* notetypes.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notetypes.pb.swift; sourceTree = "<group>"; };
 		6E9D10B33E510560C7C872BA /* config.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.pb.swift; sourceTree = "<group>"; };
 		6F64A21A7E4E8E8554B25315 /* ankiweb.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ankiweb.pb.swift; sourceTree = "<group>"; };
+		6FCBA541B01CB26E596D5A1A /* github.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = github.pb.swift; sourceTree = "<group>"; };
 		715FA356DF7D8CBDD1A7CC0A /* AnkiBackendTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnkiBackendTests.swift; sourceTree = "<group>"; };
 		73E827B94060421BF08461AC /* SyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoordinator.swift; sourceTree = "<group>"; };
 		75F68067F240542B3A2CC397 /* SyncSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSettingsView.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				32B9D70DB9C5720FCA55EF22 /* decks.pb.swift */,
 				41FC6D728925433161D25022 /* frontend.pb.swift */,
 				DDDD60ECEE66E73EB70F7C03 /* generic.pb.swift */,
+				6FCBA541B01CB26E596D5A1A /* github.pb.swift */,
 				C4FF3E7350198CCE25C57972 /* i18n.pb.swift */,
 				429B41360E0CB6A9DDAB1660 /* image_occlusion.pb.swift */,
 				9266037C8A79CED15B7E8E79 /* import_export.pb.swift */,
@@ -552,6 +555,7 @@
 				29B11D6C6FADAFA9B7AC829D /* decks.pb.swift in Sources */,
 				56BF3E1BF616D6C3CAF1A3A7 /* frontend.pb.swift in Sources */,
 				59ACB90539BE048EA65B014A /* generic.pb.swift in Sources */,
+				BB139025A0CE1AAA54D200BC /* github.pb.swift in Sources */,
 				4CCAD4182BA8E3F2BACBC112 /* i18n.pb.swift in Sources */,
 				A9B8BF459BE384D83D9915CE /* image_occlusion.pb.swift in Sources */,
 				11F70EF47462F296DB7F85D1 /* import_export.pb.swift in Sources */,

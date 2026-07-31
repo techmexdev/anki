@@ -106,6 +106,12 @@ extension AnkiBackend: SyncBackend {
                 completed: progress.transferred,
                 total: progress.total
             )
+        case .some(.downloadUpdate(let progress)):
+        return SyncProgress(
+            title: "Downloading collection",
+            completed: progress.downloadedBytes,
+            total: progress.totalBytes
+        )
         case .some(.normalSync(let progress)):
             return SyncProgress(
                 title: progress.stage.isEmpty ? "Syncing collection" : progress.stage,
