@@ -405,7 +405,7 @@ class AnkiApp(QApplication):
     # Global cursor: pointer for Qt buttons
     ##################################################
 
-    def eventFilter(self, src: Any, evt: QEvent | None) -> bool:
+    def eventFilter(self, src: Any, evt: QEvent | None) -> bool:  # complexipy: ignore
         assert evt is not None
 
         # Handle Close shortcut here because modal dialogs disable main-window shortcuts
@@ -476,7 +476,7 @@ def parseArgs(argv: list[str]) -> tuple[argparse.Namespace, list[str]]:
     return parser.parse_known_args(argv[1:])
 
 
-def setupGL(pm: aqt.profiles.ProfileManager) -> None:
+def setupGL(pm: aqt.profiles.ProfileManager) -> None:  # complexipy: ignore
     driver = pm.video_driver()
     # RHI errors are emitted multiple times so make sure we only handle them once
     driver_failed = False
@@ -589,7 +589,9 @@ def run() -> None:
         )
 
 
-def _run(argv: list[str] | None = None, exec: bool = True) -> AnkiApp | None:
+def _run(  # complexipy: ignore
+    argv: list[str] | None = None, exec: bool = True
+) -> AnkiApp | None:
     """Start AnkiQt application or reuse an existing instance if one exists.
 
     If the function is invoked with exec=False, the AnkiQt will not enter

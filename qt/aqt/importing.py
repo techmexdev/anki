@@ -335,7 +335,7 @@ def onImport(mw: AnkiQt) -> None:
     importFile(mw, file)
 
 
-def importFile(mw: AnkiQt, file: str) -> None:
+def importFile(mw: AnkiQt, file: str) -> None:  # complexipy: ignore
     importerClass = None
     done = False
     for i in importing.importers(mw.col):

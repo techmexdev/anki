@@ -10,10 +10,10 @@
 
 ## Result
 
-| Method | Correct and useful | Wrong | Correct but bad teaching | Rate |
-|---|---:|---:|---:|---:|
-| Source-traced Codex outputs | 45 | 0 | 5 | 90% |
-| Keyword-overlap baseline | 37 | 13 | 0 | 74% |
+| Method                      | Correct and useful | Wrong | Correct but bad teaching | Rate |
+| --------------------------- | -----------------: | ----: | -----------------------: | ---: |
+| Source-traced Codex outputs |                 45 |     0 |                        5 |  90% |
+| Keyword-overlap baseline    |                 37 |    13 |                        0 |  74% |
 
 Lift: 16%. Decision: **PASSED**.
 

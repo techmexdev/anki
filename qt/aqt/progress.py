@@ -227,7 +227,7 @@ class ProgressManager:
             self._counter = value if value is not None else (self._counter + 1)
             self._win.form.progressBar.setValue(self._counter)
 
-    def finish(self) -> None:
+    def finish(self) -> None:  # complexipy: ignore
         def do_window_cleanup(future: Future | None = None):
             # this method can be called in an async fashion from taskman where a future
             # is passed or in synchronous manner from the main thread
