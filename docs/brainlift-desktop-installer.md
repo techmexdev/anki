@@ -8,7 +8,7 @@ but bundles the local `anki` and `aqt` wheels and locks all other dependencies.
 Build the proof installer on Apple Silicon:
 
 ```shell
-qt/launcher/mac/build-brainlift.sh
+ts/lib/editable/build-brainlift.sh
 ```
 
 The build:
@@ -28,6 +28,11 @@ normal indexes, matching the upstream launcher's dependency model.
 
 The proof DMG is ad-hoc signed for local testing. It is not Developer ID signed
 or notarized, so it is not a public production release artifact.
+
+Latest reconciled-branch proof (2026-07-30): the installer build, isolated first
+install smoke, DMG creation, and 97 desktop/Qt tests passed at commit
+`a62d39eaa20587b28fa25a2c4b816a1aa932287d`. The DMG SHA-256 is
+`74b43352b70322e62bfa2d78751063b9d1c138930b85831051282be27ec12ae3`.
 
 The builder refuses tracked and untracked worktree changes. Ignored build
 outputs remain allowed. The embedded commit therefore identifies the exact
